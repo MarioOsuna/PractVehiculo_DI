@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="35dp"
+        android:text="@string/Coches"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="@+id/buttonInsCoches"
+        app:layout_constraintStart_toStartOf="@+id/editTextMatrCoches"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonMosCoches"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:text="@string/mostrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonModCoches" />
+
+    <Button
+        android:id="@+id/buttonInsCoches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/insertar"
+        app:layout_constraintEnd_toStartOf="@+id/buttonVolver"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Button
+        android:id="@+id/buttonBorCoches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="22dp"
+        android:text="@string/borrar"
+        app:layout_constraintBottom_toTopOf="@+id/buttonMosCoches"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/buttonModCoches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="17dp"
+        android:text="@string/Modificar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <ListView
+        android:id="@+id/ListaCoches"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextMarca" />
+
+    <Button
+        android:id="@+id/buttonVolver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="54dp"
+        android:background="@android:drawable/ic_menu_revert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextMatrCoches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="27dp"
+        android:ems="10"
+        android:hint="@string/Matrícula"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/editTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonMosCoches" />
+
+    <EditText
+        android:id="@+id/editTextMarca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="19dp"
+        android:ems="10"
+        android:hint="@string/Marca"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextMatrCoches" />
+
+    <EditText
+        android:id="@+id/editTextColor"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="58dp"
+        android:ems="10"
+        android:hint="color"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextMarca"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextMatrCoches"
+        app:layout_constraintTop_toTopOf="@+id/buttonMosCoches" />
+</androidx.constraintlayout.widget.ConstraintLayout>

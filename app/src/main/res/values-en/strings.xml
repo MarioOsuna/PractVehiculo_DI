@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">vehiculos</string>
+    <string name="gestion">" Vehicle Management"</string>
+    <string name="Coches">Cars</string>
+    <string name="Gastos">Expenses</string>
+    <string name="Matrícula">Enrollment</string>
+    <string name="Enviar">Send</string>
+    <string name="Concepto">Concept</string>
+    <string name="Marca">Brand</string>
+    <string name="Valor">Value</string>
+    <string name="Tablas">Table</string>
+    <string name="BorrarCoches">Delete cars</string>
+    <string name="BorrarGastos">Delete Expenses</string>
+    <string name="insertarCoches">Insert cars</string>
+    <string name="insertarGastos">Insert expenses</string>
+    <string name="modificarCoches">Update cars</string>
+    <string name="modificarGastos">Update Expenses</string>
+    <string name="mostrarCoches">To show cars</string>
+    <string name="mostrarGastos">To show expenses</string>
+</resources>
