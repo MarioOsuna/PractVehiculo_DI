@@ -18,4 +18,8 @@
     <string name="modificarGastos">Update Expenses</string>
     <string name="mostrarCoches">To show cars</string>
     <string name="mostrarGastos">To show expenses</string>
+    <string name="Modificar">Update</string>
+    <string name="borrar">Delete</string>
+    <string name="insertar">Insert</string>
+    <string name="mostrar">To Show</string>
 </resources>

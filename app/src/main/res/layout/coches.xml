@@ -32,8 +32,7 @@
         android:id="@+id/buttonInsCoches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="16dp"
         android:text="@string/insertar"
         app:layout_constraintEnd_toStartOf="@+id/buttonVolver"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
