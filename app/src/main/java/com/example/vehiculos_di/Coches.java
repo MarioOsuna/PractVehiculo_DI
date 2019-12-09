@@ -32,6 +32,7 @@ public class Coches extends AppCompatActivity {
     Button buttonVolver, buttonModificar, buttonInsertar, buttonBorrar, buttonMostrar;
     EditText matricula, marca, color;
     ListView lista;
+    static String direccion="/web/listadoCSV.php";
     static String SERVIDOR = "http://192.168.100.19";//casa
     //static String SERVIDOR = "http://192.168.0.111:8080";//clase
     ProgressDialog progressDialog;
@@ -65,7 +66,7 @@ public class Coches extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DescargarCSV descargarCSV = new DescargarCSV();
-                descargarCSV.execute("/web/listadoCSV.php");
+                descargarCSV.execute(direccion);
                 //descargarCSV.execute("/pract/listadoCSV.php");
             }
         });
@@ -75,8 +76,7 @@ public class Coches extends AppCompatActivity {
                 if (matricula.getText().toString() == " ") {
                     Toast.makeText(Coches.this, "Debe introducir al menos el campo matrícula", Toast.LENGTH_SHORT).show();
                 } else {
-                    String dir2 = "/web/listadoCSV.php";
-                    if (!comprobar(matricula.getText().toString(), dir2)) {
+                    if (!comprobar(matricula.getText().toString(), direccion)) {
                         String dir = "/web/insertarPOSTCoches.php";
                         Insertar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
                     } else {
@@ -91,8 +91,8 @@ public class Coches extends AppCompatActivity {
                 if (matricula.getText().toString() == " ") {
                     Toast.makeText(Coches.this, "Debe introducir al menos el campo matrícula", Toast.LENGTH_SHORT).show();
                 } else {
-                    String dir2 = "/web/listadoCSV.php";
-                    if (comprobar(matricula.getText().toString(), dir2)) {
+
+                    if (comprobar(matricula.getText().toString(), direccion)) {
                         String dir = "/web/updateGETCoches.php";
                         Modificar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
                     } else {
@@ -105,12 +105,12 @@ public class Coches extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (matricula.getText().toString() == " ") {
-                    Toast.makeText(Coches.this, "Debe introducir al menos el campo matrícula", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Coches.this, "Debe introducir el campo matrícula", Toast.LENGTH_SHORT).show();
                 } else {
-                    String dir2 = "/web/listadoCSV.php";
 
-                    if (comprobar(matricula.getText().toString(), dir2)) {
-                        String dir = "/web/deleteGET.php";
+
+                    if (comprobar(matricula.getText().toString(), direccion)) {
+                        String dir = "/web/deleteGETCoches.php";
                         Eliminar(matricula.getText().toString(), dir);
                     } else {
                         Toast.makeText(Coches.this, "No existe esa matrícula", Toast.LENGTH_SHORT).show();
