@@ -38,8 +38,8 @@ public class Gastos extends AppCompatActivity {
     ListView lista;
     static String direccion = "/web/listadoJSON.php";
     static String direccion2 = "/web/listadoCSV.php";
-    static String SERVIDOR = "http:// 192.168.100.19";
-    //static String SERVIDOR = "http://192.168.0.111:8080";//Clase
+    //static String SERVIDOR = "http:// 192.168.100.19";
+    static String SERVIDOR = "http://192.168.0.111:8080";//Clase
     ProgressDialog progressDialog;
 
     @Override
@@ -103,7 +103,7 @@ public class Gastos extends AppCompatActivity {
                         if (comprobarMatricula(matricula.getText().toString(), direccion2)) {
                             String dir = "/web/updateGETGastos.php";
                             Modificar(matricula.getText().toString(), concepto.getText().toString(), valor.getText().toString(), dir);
-                        }else{
+                        } else {
                             Toast.makeText(Gastos.this, "No existe esa matrícula en la tabla coches", Toast.LENGTH_SHORT).show();
                         }
 
