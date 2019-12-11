@@ -24,8 +24,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Coches extends AppCompatActivity {
@@ -34,9 +36,10 @@ public class Coches extends AppCompatActivity {
     ListView lista;
 
     static String direccion = "/web/listadoCSV.php";
-    //static String SERVIDOR = "http://192.168.100.19";//casa
-    static String SERVIDOR = "http://192.168.0.111:8080";//clase
+    static String SERVIDOR = "http://192.168.100.19:8080";//casa
+    //static String SERVIDOR = "http://192.168.0.111:8080";//clase
     ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,16 +80,27 @@ public class Coches extends AppCompatActivity {
         buttonInsertar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (matricula.getText().toString() == " ") {
+                if (matricula.getText().toString().equals("")) {
                     Toast.makeText(Coches.this, "Debe introducir al menos el campo matrícula", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (!comprobar(matricula.getText().toString(), direccion)) {
+                    Comprobar comprobar = new Comprobar();
+                    comprobar.execute(direccion);
+                    boolean a=comprobar.existe;
+                    Log.i("DE lujo",""+a);
+                    // String dir = "/web/insertarPOSTCoches.php";
+                   /* String dir = "/web/insertarGET.php";
+                    InsertarGet(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);*/
+                    // Insertar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
 
-                        String dir = "/web/insertarPOSTCoches.php";
+
+                    /*if (!comprobar(matricula.getText().toString(), direccion)) {
+
+                        // String dir = "/web/insertarPOSTCoches.php";
+                        String dir = "/web/insertarGET.php";
                         Insertar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
                     } else {
                         Toast.makeText(Coches.this, "Ya se ha introducido esa matrícula", Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
                 }
 
             }
@@ -94,17 +108,17 @@ public class Coches extends AppCompatActivity {
         buttonModificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (matricula.getText().toString() == " ") {
+                if (matricula.getText().toString().equals("")) {
                     Toast.makeText(Coches.this, "Debe introducir al menos el campo matrícula", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    if (comprobar(matricula.getText().toString(), direccion)) {
+                   /* if (comprobar(matricula.getText().toString(), direccion)) {
 
                         String dir = "/web/updateGETCoches.php";
                         Modificar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
                     } else {
                         Toast.makeText(Coches.this, "No existe esa matrícula", Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
                 }
 
             }
@@ -112,17 +126,17 @@ public class Coches extends AppCompatActivity {
         buttonBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (matricula.getText().toString() == " ") {
+                if (matricula.getText().toString().equals("")) {
                     Toast.makeText(Coches.this, "Debe introducir el campo matrícula", Toast.LENGTH_SHORT).show();
                 } else {
 
 
-                    if (comprobar(matricula.getText().toString(), direccion)) {
+                   /* if (comprobar(matricula.getText().toString(), direccion)) {
                         String dir = "/web/deleteGETCoches.php";
                         Eliminar(matricula.getText().toString(), dir);
                     } else {
                         Toast.makeText(Coches.this, "No existe esa matrícula", Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
                 }
 
             }
@@ -133,7 +147,6 @@ public class Coches extends AppCompatActivity {
 
     private class DescargarCSV extends AsyncTask<String, Void, Void> {
         String total = "";
-        boolean existe = false;
 
         @Override
         protected void onPreExecute() {
@@ -245,8 +258,8 @@ public class Coches extends AppCompatActivity {
 
     }
 
-    private void Modificar(String Matricula, String marca, String color, String dir) {
-        String script = SERVIDOR + dir + "?Matricula=" + Matricula + "&Marca=" + marca + "&Color=" + color;
+    private void InsertarGet(String Matricula, String Marca, String color, String dir) {
+        /*String script = SERVIDOR + dir + "?Matricula=" + Matricula + "&Marca=" + marca + "&Color=" + color;
         String contenido = "";
 
         System.out.println(script);
@@ -272,13 +285,16 @@ public class Coches extends AppCompatActivity {
         } catch (UnsupportedEncodingException ex) {
         } catch (IOException ex) {
 
-        }
-    }
+        }*/
 
-    private void Eliminar(String matricula, String dir) {
-        String script = SERVIDOR + dir + "?matricula=" + matricula;
+        String script = null;
+        try {
+            script = SERVIDOR + "/web/insertarGET.php?Matricula=" + URLEncoder.encode(Matricula, "UTF-8") + "&Marca=" + URLEncoder.encode(Marca, "UTF-8") + "&color=" + URLEncoder.encode(color, "UTF-8");
+        } catch (Exception e) {
+
+        }
         String contenido = "";
-       /* try {
+        try {
 
             URLConnection conexion = null;
 
@@ -296,87 +312,96 @@ public class Coches extends AppCompatActivity {
             br.close();
 
         } catch (MalformedURLException ex) {
+            Logger.getLogger(Coches.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Coches.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-        }*/
-        URL url = null;
-        HttpURLConnection httpURLConnection = null;
-
-
-        try {
-            url = new URL(script);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.connect();
-
-            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-                String linea = "";
-
-                while ((linea = br.readLine()) != null) {
-                    contenido += linea + "\n";
-                }
-
-                br.close();
-                inputStream.close();
-
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(Coches.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private boolean comprobar(String cadena, String dir) {
-        boolean existe = false;
-        String csv = "";
-        //  String scriptConsulta = SERVIDOR + dir;
+    private class Comprobar extends AsyncTask<String, Void, Void> {
+        String total = "";
+        boolean existe;
 
-        URL url = null;
-        HttpURLConnection httpURLConnection = null;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+         //   existe=false;
 
+        }
 
-        try {
-            url = new URL(SERVIDOR + dir);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.connect();
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
 
-            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            String[] lineas = total.split("\n");
 
-                String linea = "";
+            for (String lin : lineas) {
+                String[] campos = lin.split(",");
+                String dato = " MATRÍCULA: " + campos[0];
+                dato += " MARCA: " + campos[1];
+                dato += " COLOR: " + campos[2];
 
-                while ((linea = br.readLine()) != null) {
-                    csv += linea + "\n";
+                if (matricula.getText().toString().equals(campos[0])) {
+                    existe = true;
+
+                }else{
+
                 }
-
-                br.close();
-                inputStream.close();
-
-
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            //return existe;
+
+
+            progressDialog.dismiss();
         }
 
-        String contenido = csv;
+        @Override
+        protected Void doInBackground(String... strings) {
+            String script = strings[0];
 
-        String lineas[] = contenido.split("\n");
+            URL url = null;
+            HttpURLConnection httpURLConnection = null;
 
-        for (String lin : lineas) {
-            String[] campos = lin.split(",");
-            if (campos.equals(campos[0])) {
-
-                existe = true;
-                Log.i("Boleano ", " " + campos[0]);
-            } else {
-                Log.i("Boleano ", " " + campos[0]);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }
-        return existe;
 
+            try {
+                url = new URL(SERVIDOR + script);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.connect();
+
+                if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+
+                    String linea = "";
+
+                    while ((linea = br.readLine()) != null) {
+                        total += linea + "\n";
+                    }
+
+                    br.close();
+                    inputStream.close();
+
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.i("CONEXION", total);
+
+            return null;
+        }
+
+        public boolean get(boolean existe) {
+           return existe;
+        }
     }
+
 
 }

@@ -38,8 +38,8 @@ public class Gastos extends AppCompatActivity {
     ListView lista;
     static String direccion = "/web/listadoJSON.php";
     static String direccion2 = "/web/listadoCSV.php";
-    //static String SERVIDOR = "http:// 192.168.100.19";
-    static String SERVIDOR = "http://192.168.0.111:8080";//Clase
+    static String SERVIDOR = "http://192.168.100.19:8080";
+    //static String SERVIDOR = "http://192.168.0.111:8080";//Clase
     ProgressDialog progressDialog;
 
     @Override
