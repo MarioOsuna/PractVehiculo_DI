@@ -38,8 +38,8 @@ public class Coches extends AppCompatActivity {
     boolean existe = false;
 
     static String direccion = "/web/listadoCSV.php";
-    // static String SERVIDOR = "http://192.168.100.19:8080";//casa
-    static String SERVIDOR = "http://192.168.0.111:8080";//clase
+    static String SERVIDOR = "http://192.168.100.19:8080";//casa
+    //static String SERVIDOR = "http://192.168.0.111:8080";//clase
     ProgressDialog progressDialog;
 
 
@@ -99,14 +99,10 @@ public class Coches extends AppCompatActivity {
                 if (matricula.getText().toString().equals("")) {
                     Toast.makeText(Coches.this, "Debe introducir al menos el campo matrícula", Toast.LENGTH_SHORT).show();
                 } else {
+                    Comprobar comprobar = new Comprobar("modificar");
+                    comprobar.execute(direccion);
 
-                   /* if (comprobar(matricula.getText().toString(), direccion)) {
 
-                        String dir = "/web/updateGETCoches.php";
-                        Modificar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
-                    } else {
-                        Toast.makeText(Coches.this, "No existe esa matrícula", Toast.LENGTH_SHORT).show();
-                    }*/
                 }
 
             }
@@ -117,14 +113,9 @@ public class Coches extends AppCompatActivity {
                 if (matricula.getText().toString().equals("")) {
                     Toast.makeText(Coches.this, "Debe introducir el campo matrícula", Toast.LENGTH_SHORT).show();
                 } else {
+                    Comprobar comprobar = new Comprobar("eliminar");
+                    comprobar.execute(direccion);
 
-
-                   /* if (comprobar(matricula.getText().toString(), direccion)) {
-                        String dir = "/web/deleteGETCoches.php";
-                        Eliminar(matricula.getText().toString(), dir);
-                    } else {
-                        Toast.makeText(Coches.this, "No existe esa matrícula", Toast.LENGTH_SHORT).show();
-                    }*/
                 }
 
             }
@@ -246,16 +237,11 @@ public class Coches extends AppCompatActivity {
 
     }
 
-    /*private void InsertarGet(String Matricula, String Marca, String color, String dir) {
-
-
-        String script = null;
-        try {
-            script = SERVIDOR + "/web/insertarGET.php?Matricula=" + URLEncoder.encode(Matricula, "UTF-8") + "&Marca=" + URLEncoder.encode(Marca, "UTF-8") + "&color=" + URLEncoder.encode(color, "UTF-8");
-        } catch (Exception e) {
-
-        }
+    private void Modificar(String Matricula, String marca, String color, String dir) {
+        String script = SERVIDOR + dir + "?Matricula=" + Matricula + "&Marca=" + marca + "&Color=" + color;
         String contenido = "";
+
+        System.out.println(script);
         try {
 
             URLConnection conexion = null;
@@ -274,13 +260,46 @@ public class Coches extends AppCompatActivity {
             br.close();
 
         } catch (MalformedURLException ex) {
-            Logger.getLogger(Coches.class.getName()).log(Level.SEVERE, null, ex);
+
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(Coches.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Coches.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-    }*/
+    }
+
+    private void Eliminar(String matricula, String dir) {
+        String script = SERVIDOR + dir + "?matricula=" + matricula;
+        String contenido = "";
+
+        URL url = null;
+        HttpURLConnection httpURLConnection = null;
+
+
+        try {
+            url = new URL(script);
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.connect();
+
+            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+
+                String linea = "";
+
+                while ((linea = br.readLine()) != null) {
+                    contenido += linea + "\n";
+                }
+
+                br.close();
+                inputStream.close();
+
+
+            }
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+    }
 
     private class Comprobar extends AsyncTask<String, Void, Void> {
         String total = "";
@@ -327,9 +346,8 @@ public class Coches extends AppCompatActivity {
                 switch (opcion) {
                     case "insertar":
                         String dir = "/web/insertarPOSTCoches.php";
-                        
-
                         Insertar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
+                        Toast.makeText(Coches.this, "Insertando...", Toast.LENGTH_SHORT).show();
                         break;
                     case "modificar":
                         Toast.makeText(Coches.this, "No existe la matrícula que desea modificar", Toast.LENGTH_SHORT).show();
@@ -348,8 +366,14 @@ public class Coches extends AppCompatActivity {
                         Toast.makeText(Coches.this, "No se puede insertar una matrícula ya existente", Toast.LENGTH_SHORT).show();
                         break;
                     case "modificar":
+                        String dir = "/web/updateGETCoches.php";
+                        Modificar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
+                        Toast.makeText(Coches.this, "Modificando...", Toast.LENGTH_SHORT).show();
                         break;
                     case "eliminar":
+                        String dire = "/web/deleteGETCoches.php";
+                        Eliminar(matricula.getText().toString(), dire);
+                        Toast.makeText(Coches.this, "Eliminando...", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;

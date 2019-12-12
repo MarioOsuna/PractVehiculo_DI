@@ -10,9 +10,12 @@
         android:roundIcon="@drawable/vehiculo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Coches"/>
-        <activity android:name=".Gastos"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".Coches"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".Gastos"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
