@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.service.autofill.CharSequenceTransformation;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -34,11 +35,13 @@ public class Coches extends AppCompatActivity {
     Button buttonVolver, buttonModificar, buttonInsertar, buttonBorrar, buttonMostrar;
     EditText matricula, marca, color;
     ListView lista;
+    //boolean existe;
 
     static String direccion = "/web/listadoCSV.php";
-    static String SERVIDOR = "http://192.168.100.19:8080";//casa
-    //static String SERVIDOR = "http://192.168.0.111:8080";//clase
+    // static String SERVIDOR = "http://192.168.100.19:8080";//casa
+    static String SERVIDOR = "http://192.168.0.111:8080";//clase
     ProgressDialog progressDialog;
+
 
 
     @Override
@@ -85,11 +88,12 @@ public class Coches extends AppCompatActivity {
                 } else {
                     Comprobar comprobar = new Comprobar();
                     comprobar.execute(direccion);
-                    boolean a=comprobar.existe;
-                    Log.i("DE lujo",""+a);
-                    // String dir = "/web/insertarPOSTCoches.php";
-                   /* String dir = "/web/insertarGET.php";
-                    InsertarGet(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);*/
+                   // boolean a = comprobar.existe;
+
+                    Toast.makeText(Coches.this, "Es " + existe+" Total "+comprobar.total, Toast.LENGTH_SHORT).show();
+                    //  String dir = "/web/insertarPOSTCoches.php";
+                    // String dir = "/web/insertarGET.php";
+                    // InsertarGet(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
                     // Insertar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
 
 
@@ -259,33 +263,7 @@ public class Coches extends AppCompatActivity {
     }
 
     private void InsertarGet(String Matricula, String Marca, String color, String dir) {
-        /*String script = SERVIDOR + dir + "?Matricula=" + Matricula + "&Marca=" + marca + "&Color=" + color;
-        String contenido = "";
 
-        System.out.println(script);
-        try {
-
-            URLConnection conexion = null;
-
-            conexion = new URL(script).openConnection();
-            conexion.connect();
-            InputStream inputStream = conexion.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-
-            String linea = "";
-
-            while ((linea = br.readLine()) != null) {
-                contenido += linea;
-
-            }
-            br.close();
-
-        } catch (MalformedURLException ex) {
-
-        } catch (UnsupportedEncodingException ex) {
-        } catch (IOException ex) {
-
-        }*/
 
         String script = null;
         try {
@@ -322,12 +300,12 @@ public class Coches extends AppCompatActivity {
 
     private class Comprobar extends AsyncTask<String, Void, Void> {
         String total = "";
-        boolean existe;
+
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-         //   existe=false;
+
 
         }
 
@@ -335,6 +313,7 @@ public class Coches extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+           boolean existe = false;
             String[] lineas = total.split("\n");
 
             for (String lin : lineas) {
@@ -343,14 +322,22 @@ public class Coches extends AppCompatActivity {
                 dato += " MARCA: " + campos[1];
                 dato += " COLOR: " + campos[2];
 
-                if (matricula.getText().toString().equals(campos[0])) {
-                    existe = true;
 
-                }else{
+                if (matricula.getText().toString().equals(campos[0])) {
+
+
+                   existe=true;
+                   Log.i("EXISTE",campos[0]+" "+existe);
+                } else {
+
+
+                    Log.i("NO EXISTE",campos[0]+" "+existe);
 
                 }
+
             }
-            //return existe;
+           // return existe;
+
 
 
             progressDialog.dismiss();
@@ -399,7 +386,7 @@ public class Coches extends AppCompatActivity {
         }
 
         public boolean get(boolean existe) {
-           return existe;
+            return existe;
         }
     }
 
