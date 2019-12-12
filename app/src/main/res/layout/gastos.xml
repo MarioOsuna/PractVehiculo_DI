@@ -31,11 +31,47 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/buttonBorGastos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="64dp"
+        android:background="@drawable/btn"
+        android:text="@string/borrar"
+        android:textColor="@drawable/txt_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonVolver2" />
+
+    <Button
+        android:id="@+id/buttonMostGastos3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="21dp"
+        android:background="@drawable/btn"
+        android:text="XML"
+        android:textColor="@drawable/txt_btn"
+        app:layout_constraintEnd_toStartOf="@+id/buttonMostGastos"
+        app:layout_constraintTop_toBottomOf="@+id/buttonInsGastos" />
+
+    <Button
+        android:id="@+id/buttonMostGastos2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn"
+        android:text="CSV"
+        android:textColor="@drawable/txt_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonModGastos" />
+
+    <Button
         android:id="@+id/buttonModGastos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="22dp"
         android:background="@drawable/btn"
         android:text="@string/Modificar"
         android:textColor="@drawable/txt_btn"
@@ -46,89 +82,68 @@
         android:id="@+id/buttonInsGastos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="22dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="21dp"
         android:background="@drawable/btn"
         android:text="@string/insertar"
         android:textColor="@drawable/txt_btn"
         app:layout_constraintEnd_toStartOf="@+id/buttonBorGastos"
-        app:layout_constraintStart_toEndOf="@+id/buttonModGastos"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
-        android:id="@+id/buttonBorGastos"
+        android:id="@+id/buttonMostGastos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="59dp"
-        android:layout_marginBottom="33dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="64dp"
         android:background="@drawable/btn"
-        android:text="@string/borrar"
+        android:text="JSON"
         android:textColor="@drawable/txt_btn"
-        app:layout_constraintBottom_toTopOf="@+id/buttonMostGastos"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/buttonMostGastos"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="190dp"
-        android:layout_marginBottom="117dp"
-        android:background="@drawable/btn"
-        android:text="@string/mostrar"
-        android:textColor="@drawable/txt_btn"
-        app:layout_constraintBottom_toTopOf="@+id/ListaGastos"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonBorGastos" />
 
     <EditText
         android:id="@+id/editTextMatriculaGastos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="@string/Matrícula"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonMostGastos" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonMostGastos3" />
 
     <EditText
         android:id="@+id/editTextID"
         android:layout_width="70dp"
         android:layout_height="52dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="ID  "
         android:inputType="number"
-        app:layout_constraintEnd_toStartOf="@+id/editTextMatriculaGastos"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonMostGastos" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonMostGastos3" />
 
     <EditText
         android:id="@+id/editTextConcepto"
-        android:layout_width="186dp"
+        android:layout_width="162dp"
         android:layout_height="0dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="11dp"
         android:ems="10"
         android:hint="@string/Concepto"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/editTextValor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextID" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextMatriculaGastos" />
 
     <EditText
         android:id="@+id/editTextValor"
-        android:layout_width="138dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="156dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="40dp"
         android:ems="10"
         android:hint="@string/Valor"
         android:inputType="number"
@@ -137,14 +152,12 @@
 
     <ListView
         android:id="@+id/ListaGastos"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="412dp"
+        android:layout_height="234dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="13dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonMostGastos" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextConcepto" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

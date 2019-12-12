@@ -15,6 +15,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,11 +39,17 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 public class Coches extends AppCompatActivity {
-    Button buttonVolver, buttonModificar, buttonInsertar, buttonBorrar, buttonMostrar;
+    Button buttonVolver, buttonModificar, buttonInsertar, buttonBorrar, buttonCSV, buttonJSON, buttonXML;
     EditText matricula, marca, color;
     ListView lista;
     boolean existe = false;
@@ -52,15 +69,17 @@ public class Coches extends AppCompatActivity {
         buttonModificar = findViewById(R.id.buttonModCoches);
         buttonInsertar = findViewById(R.id.buttonInsCoches);
         buttonBorrar = findViewById(R.id.buttonBorCoches);
-        buttonMostrar = findViewById(R.id.buttonMosCoches);
+        buttonCSV = findViewById(R.id.buttonMosCoches);
+        buttonJSON = findViewById(R.id.buttonMosCoches2);
+        buttonXML = findViewById(R.id.buttonMosCoches3);
 
         matricula = findViewById(R.id.editTextMatrCoches);
         marca = findViewById(R.id.editTextMarca);
         color = findViewById(R.id.editTextColor);
         lista = findViewById(R.id.ListaCoches);
 
-        DescargarCSV descargarCSV = new DescargarCSV();
-        descargarCSV.execute(direccion);
+       /* DescargarCSV descargarCSV = new DescargarCSV();
+        descargarCSV.execute(direccion);*/
 
         buttonVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +90,7 @@ public class Coches extends AppCompatActivity {
                 finish();
             }
         });
-        buttonMostrar.setOnClickListener(new View.OnClickListener() {
+        buttonCSV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DescargarCSV descargarCSV = new DescargarCSV();
@@ -118,6 +137,20 @@ public class Coches extends AppCompatActivity {
 
                 }
 
+            }
+        });
+        buttonXML.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DescargarXML descargarXML = new DescargarXML();
+                descargarXML.execute("/web/listadoXMLCoches.php");
+            }
+        });
+        buttonJSON.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DescargarJSON descargarJSON = new DescargarJSON();
+                descargarJSON.execute("/web/listadoJSONCoches.php");
             }
         });
 
@@ -424,5 +457,194 @@ public class Coches extends AppCompatActivity {
 
     }
 
+    private class DescargarXML extends AsyncTask<String, Void, Void> {
+        List<String> list = new ArrayList<String>();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(Coches.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setTitle("Descargando la información de la red en xml.");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            ArrayAdapter<String> adapter;
+
+            adapter = new ArrayAdapter<String>(getApplicationContext(),
+                    R.layout.support_simple_spinner_dropdown_item, list);
+            lista.setAdapter(adapter);
+
+            progressDialog.dismiss();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            String script = strings[0];
+            String url = SERVIDOR + script;
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+           // DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            try {
+                /*DocumentBuilder db = dbf.newDocumentBuilder();
+                Document document = db.parse(new URL(url).openStream());
+
+                Element raiz = document.getDocumentElement();
+                NodeList hijos = raiz.getChildNodes();
+                for (int i = 0; i < hijos.getLength(); i++) {
+
+                    Node nodo = hijos.item(i);
+                    if (nodo instanceof Element) {
+                        NodeList nietos = nodo.getChildNodes();
+
+                        String registro = "";
+                        for (int j = 0; j < nietos.getLength(); j++) {
+                            if (nietos.item(j) instanceof Element) {
+                                registro += " " + nietos.item(j).getNodeName() + " " + nietos.item(j).getTextContent();
+                            }
+                        }*/
+
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+                DocumentBuilder db = dbf.newDocumentBuilder();
+
+                Document doc = db.parse(new URL(url).openStream());
+
+                Element raiz = doc.getDocumentElement();
+
+                NodeList hijos = raiz.getChildNodes();
+
+                for (int i = 0; i < hijos.getLength(); i++) {
+
+                    Node nodo = hijos.item(i);
+
+                    if (nodo instanceof Element) {
+                        NodeList nietos = nodo.getChildNodes();
+                        String[] fila = new String[nietos.getLength()];
+                        System.out.println("Tengo " + nietos.getLength() + " nietos");
+                        int contador = 0;
+                        String registro = "";
+                        for (int j = 1; j < nietos.getLength(); j += 2) {
+                            if (i == 1) {
+                                String fila1=nietos.item(j).getNodeName()+"";
+                                list.add(fila1);
+
+                            }
+                            fila[contador] = nietos.item(j).getTextContent();
+                            contador++;
+                            registro="Name: " + nietos.item(j).getNodeName()+"contenido: " + nietos.item(j).getTextContent()+"\n";
+
+                        }
+                        list.add(registro);
+                    }
+
+                }
+
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+    private class DescargarJSON extends AsyncTask<String, Void, Void> {
+        List<String> list = new ArrayList<String>();
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            String script = strings[0];
+            String url = SERVIDOR + script;
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String contenido = "";
+            try {
+
+                URLConnection conexion = null;
+
+                conexion = new URL(url).openConnection();
+                conexion.connect();
+                InputStream inputStream = conexion.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
+                String linea = "";
+
+                while ((linea = br.readLine()) != null) {
+                    contenido += linea;
+
+                }
+                br.close();
+
+            } catch (MalformedURLException ex) {
+            } catch (UnsupportedEncodingException ex) {
+            } catch (IOException ex) {
+            }
+            JsonParser parser = new JsonParser();
+            JsonArray jsonArray = parser.parse(contenido).getAsJsonArray();
+            String fila1 = "Matrícula\t\t\tMarca\t\t\t\t\tColor";
+            list.add(fila1);
+            for (JsonElement elemento : jsonArray) {
+                String fila = "";
+                JsonObject objeto = elemento.getAsJsonObject();
+
+
+                Set<Map.Entry<String, JsonElement>> entrySet = objeto.entrySet();
+                int contador = 0;
+
+                for (Map.Entry<String, JsonElement> entry : entrySet) {
+                    if (contador % 2 != 0) {
+                        fila += "  " + entry.getValue().getAsString();
+                    }
+                    contador++;
+
+
+                }
+
+                list.add(fila);
+
+
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(Coches.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setTitle("Descargando la información de la red en JSON.");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            ArrayAdapter<String> adapter;
+
+            adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, list);
+            lista.setAdapter(adapter);
+
+            progressDialog.dismiss();
+        }
+    }
 
 }
