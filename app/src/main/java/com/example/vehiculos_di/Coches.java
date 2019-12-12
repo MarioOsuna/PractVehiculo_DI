@@ -35,13 +35,12 @@ public class Coches extends AppCompatActivity {
     Button buttonVolver, buttonModificar, buttonInsertar, buttonBorrar, buttonMostrar;
     EditText matricula, marca, color;
     ListView lista;
-    //boolean existe;
+    boolean existe = false;
 
     static String direccion = "/web/listadoCSV.php";
     // static String SERVIDOR = "http://192.168.100.19:8080";//casa
     static String SERVIDOR = "http://192.168.0.111:8080";//clase
     ProgressDialog progressDialog;
-
 
 
     @Override
@@ -86,25 +85,10 @@ public class Coches extends AppCompatActivity {
                 if (matricula.getText().toString().equals("")) {
                     Toast.makeText(Coches.this, "Debe introducir al menos el campo matrícula", Toast.LENGTH_SHORT).show();
                 } else {
-                    Comprobar comprobar = new Comprobar();
+                    Comprobar comprobar = new Comprobar("insertar");
                     comprobar.execute(direccion);
-                   // boolean a = comprobar.existe;
-
-                    Toast.makeText(Coches.this, "Es " + existe+" Total "+comprobar.total, Toast.LENGTH_SHORT).show();
-                    //  String dir = "/web/insertarPOSTCoches.php";
-                    // String dir = "/web/insertarGET.php";
-                    // InsertarGet(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
-                    // Insertar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
 
 
-                    /*if (!comprobar(matricula.getText().toString(), direccion)) {
-
-                        // String dir = "/web/insertarPOSTCoches.php";
-                        String dir = "/web/insertarGET.php";
-                        Insertar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
-                    } else {
-                        Toast.makeText(Coches.this, "Ya se ha introducido esa matrícula", Toast.LENGTH_SHORT).show();
-                    }*/
                 }
 
             }
@@ -262,7 +246,7 @@ public class Coches extends AppCompatActivity {
 
     }
 
-    private void InsertarGet(String Matricula, String Marca, String color, String dir) {
+    /*private void InsertarGet(String Matricula, String Marca, String color, String dir) {
 
 
         String script = null;
@@ -296,11 +280,15 @@ public class Coches extends AppCompatActivity {
         } catch (IOException ex) {
             Logger.getLogger(Coches.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }*/
 
     private class Comprobar extends AsyncTask<String, Void, Void> {
         String total = "";
+        String opcion;
 
+        public Comprobar(String opcion) {
+            this.opcion = opcion;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -312,8 +300,7 @@ public class Coches extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
-           boolean existe = false;
+            existe = false;
             String[] lineas = total.split("\n");
 
             for (String lin : lineas) {
@@ -326,21 +313,51 @@ public class Coches extends AppCompatActivity {
                 if (matricula.getText().toString().equals(campos[0])) {
 
 
-                   existe=true;
-                   Log.i("EXISTE",campos[0]+" "+existe);
+                    existe = true;
+                    Log.i("EXISTE", campos[0] + " " + existe);
                 } else {
 
 
-                    Log.i("NO EXISTE",campos[0]+" "+existe);
+                    Log.i("NO EXISTE", campos[0] + " " + existe);
 
                 }
 
             }
-           // return existe;
+            if (!existe) {
+                switch (opcion) {
+                    case "insertar":
+                        String dir = "/web/insertarPOSTCoches.php";
+                        
+
+                        Insertar(matricula.getText().toString(), marca.getText().toString(), color.getText().toString(), dir);
+                        break;
+                    case "modificar":
+                        Toast.makeText(Coches.this, "No existe la matrícula que desea modificar", Toast.LENGTH_SHORT).show();
+                        break;
+                    case "eliminar":
+                        Toast.makeText(Coches.this, "No existe la matrícula que desea eliminar", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
 
 
+            } else {
+                switch (opcion) {
+                    case "insertar":
+                        Toast.makeText(Coches.this, "No se puede insertar una matrícula ya existente", Toast.LENGTH_SHORT).show();
+                        break;
+                    case "modificar":
+                        break;
+                    case "eliminar":
+                        break;
+                    default:
+                        break;
 
-            progressDialog.dismiss();
+                }
+            }
+
+
         }
 
         @Override
@@ -350,11 +367,6 @@ public class Coches extends AppCompatActivity {
             URL url = null;
             HttpURLConnection httpURLConnection = null;
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             try {
                 url = new URL(SERVIDOR + script);
@@ -385,9 +397,7 @@ public class Coches extends AppCompatActivity {
             return null;
         }
 
-        public boolean get(boolean existe) {
-            return existe;
-        }
+
     }
 
 
