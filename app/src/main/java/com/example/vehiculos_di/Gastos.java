@@ -50,8 +50,8 @@ public class Gastos extends AppCompatActivity {
     ListView lista;
     static String direccion = "/web/listadoJSON.php";
     static String Comprobar_Matricula = "/web/listadoCSV.php";
-    static String SERVIDOR = "http://192.168.100.19:8080";
-    //static String SERVIDOR = "http://192.168.0.111:8080";//Clase
+   // static String SERVIDOR = "http://192.168.100.19:8080";
+    static String SERVIDOR = "http://192.168.0.111:8080";//Clase
     ProgressDialog progressDialog;
 
     @Override
@@ -679,9 +679,9 @@ public class Gastos extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            // DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             try {
-                /*DocumentBuilder db = dbf.newDocumentBuilder();
+                DocumentBuilder db = dbf.newDocumentBuilder();
                 Document document = db.parse(new URL(url).openStream());
 
                 Element raiz = document.getDocumentElement();
@@ -695,41 +695,11 @@ public class Gastos extends AppCompatActivity {
                         String registro = "";
                         for (int j = 0; j < nietos.getLength(); j++) {
                             if (nietos.item(j) instanceof Element) {
-                                registro += " " + nietos.item(j).getNodeName() + " " + nietos.item(j).getTextContent();
+                                registro += " " + nietos.item(j).getTextContent();
                             }
-                        }*/
-
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-                DocumentBuilder db = dbf.newDocumentBuilder();
-
-                Document doc = db.parse(new URL(url).openStream());
-
-                Element raiz = doc.getDocumentElement();
-
-                NodeList hijos = raiz.getChildNodes();
-
-                for (int i = 0; i < hijos.getLength(); i++) {
-
-                    Node nodo = hijos.item(i);
-
-                    if (nodo instanceof Element) {
-                        NodeList nietos = nodo.getChildNodes();
-                        String[] fila = new String[nietos.getLength()];
-                        System.out.println("Tengo " + nietos.getLength() + " nietos");
-                        int contador = 0;
-                        String registro = "";
-                        for (int j = 1; j < nietos.getLength(); j += 2) {
-                            if (i == 1) {
-                                String fila1=nietos.item(j).getNodeName()+"";
-                                list.add(fila1);
-
-                            }
-                            fila[contador] = nietos.item(j).getTextContent();
-                            contador++;
-                            registro="Name: " + nietos.item(j).getNodeName()+"contenido: " + nietos.item(j).getTextContent()+"\n";
-
                         }
+
+
                         list.add(registro);
                     }
 
